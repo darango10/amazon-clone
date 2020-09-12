@@ -1,7 +1,21 @@
 import React from 'react';
 import '../css/Product.css'
+import {useStateValue} from "../StateProvider";
+import {actionTypes} from "../reducer";
 
-const Product = ({title, price, image, rating}) => {
+const Product = ({id, title, price, image, rating}) => {
+
+    const [{basket}, dispatch] = useStateValue();
+
+    const addToBasket = () => {
+        dispatch({
+            type: actionTypes.ADD_TO_BASKET,
+            payload: {
+                id, title, image, price, rating
+            }
+        })
+    }
+
     return (
         <div className='product'>
             <div className="product__info">
@@ -14,7 +28,7 @@ const Product = ({title, price, image, rating}) => {
                     {Array(rating)
                         .fill()
                         .map((_, i) => (
-                            <p>{'⭐'}</p>
+                            <p key={i}>{'⭐'}</p>
                         ))}
 
                 </div>
@@ -24,7 +38,7 @@ const Product = ({title, price, image, rating}) => {
                 src={image}
                 alt={title}/>
 
-            <button>Add to Basket</button>
+            <button onClick={addToBasket}>Add to Basket</button>
         </div>
     );
 };
