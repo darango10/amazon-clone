@@ -4,10 +4,11 @@ import {useStateValue} from "../StateProvider";
 import CheckoutProduct from "./CheckoutProduct";
 import {Link} from "react-router-dom";
 import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
-import {getBasketTotal} from "../reducer";
+import {actionTypes, getBasketTotal} from "../reducer";
 import CurrencyFormat from "react-currency-format";
 import axios from "../axios";
 import {useHistory} from 'react-router-dom'
+import {db} from "../firebase";
 
 const Payment = () => {
 
@@ -35,6 +36,8 @@ const Payment = () => {
         getClientSecret();
     }, [basket]);
 
+    console.log('THE SECRET IS>>>>>', clientSecret)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -46,19 +49,37 @@ const Payment = () => {
             }
         }).then(({paymentIntent}) => {
             // paymentIntent=paymentConfirmation
+
+            db
+                .collection('users')
+                .doc(user?.uid)
+                .collection('orders')
+                .doc(paymentIntent.id)
+                .set({
+                    basket: basket,
+                    amount: paymentIntent.amount,
+                    created: paymentIntent.created
+                })
+
+
             setSucceded(true)
             setError(null)
             setProcessing(false)
+
+            dispatch({
+                type: actionTypes.EMPTY_BASKET
+            })
 
             history.replace('/orders')
         })
 
     }
 
-    const handleChange = e => {
-        setDisabled(e.empty)
-        setError(e.error ? e.error.message : "")
-
+    const handleChange = event => {
+        // Listen for changes in the CardElement
+        // and display any errors as the customer types their card details
+        setDisabled(event.empty);
+        setError(event.error ? event.error.message : "");
     }
 
     return (

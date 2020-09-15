@@ -49,6 +49,7 @@ const Header = () => {
                 }
 
 
+                <Link to={'/orders'}>
                 <div className="header__option">
                     <span className="header__optionLineOne">
                         Returns
@@ -57,6 +58,7 @@ const Header = () => {
                         & Orders
                     </span>
                 </div>
+                </Link>
 
                 <div className="header__option">
                     <span className="header__optionLineOne">

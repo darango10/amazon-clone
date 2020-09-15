@@ -15,6 +15,7 @@ import {actionTypes} from "./reducer";
 import Payment from "./components/Payment";
 import {loadStripe} from "@stripe/stripe-js/pure";
 import {Elements} from "@stripe/react-stripe-js";
+import Orders from "./components/Orders";
 
 const promise = loadStripe('pk_test_51HRUVMLbeAh5xAGDrspgor3yo383oVfsjmuEz9zu7JNogtGKywIFrpf8wBMzZpJg7RKfo3qoR3aOgpq0zG32MOTQ00kOO0sec5');
 
@@ -59,6 +60,12 @@ function App() {
                         </Elements>
 
                     </Route>
+
+                    <Route exact path={'/orders'}>
+                        <Header/>
+                        <Orders/>
+                    </Route>
+
                     <Route exact path={'/'}>
                         <Header/>
                         <Home/>

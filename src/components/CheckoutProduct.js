@@ -3,7 +3,7 @@ import '../css/CheckoutProduct.css'
 import {useStateValue} from "../StateProvider";
 import {actionTypes} from "../reducer";
 
-const CheckoutProduct = ({item}) => {
+const CheckoutProduct = ({item,hideButton}) => {
 
     const [{basket}, dispatch] = useStateValue();
 
@@ -32,7 +32,8 @@ const CheckoutProduct = ({item}) => {
                             <p key={i}>{'⭐'}</p>
                         ))}
                 </div>
-                <button onClick={removeFromBasket}>Remove from Basket</button>
+                {!hideButton && <button onClick={removeFromBasket}>Remove from Basket</button>}
+
 
             </div>
         </div>
