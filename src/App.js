@@ -12,10 +12,15 @@ import Login from "./components/Login";
 import {auth} from "./firebase";
 import {useStateValue} from "./StateProvider";
 import {actionTypes} from "./reducer";
+import Payment from "./components/Payment";
+import {loadStripe} from "@stripe/stripe-js/pure";
+import {Elements} from "@stripe/react-stripe-js";
+
+const promise = loadStripe('pk_test_51HRUVMLbeAh5xAGDrspgor3yo383oVfsjmuEz9zu7JNogtGKywIFrpf8wBMzZpJg7RKfo3qoR3aOgpq0zG32MOTQ00kOO0sec5');
 
 function App() {
 
-    const [{user, isLoggedIn}, dispatch] = useStateValue();
+    const [{}, dispatch] = useStateValue();
 
     useEffect(() => {
         auth.onAuthStateChanged(authUser => {
@@ -46,6 +51,13 @@ function App() {
                     <Route exact path={'/checkout'}>
                         <Header/>
                         <Checkout/>
+                    </Route>
+                    <Route exact path={'/payment'}>
+                        <Header/>
+                        <Elements stripe={promise}>
+                            <Payment/>
+                        </Elements>
+
                     </Route>
                     <Route exact path={'/'}>
                         <Header/>
